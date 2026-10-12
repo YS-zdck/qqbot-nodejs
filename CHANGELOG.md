@@ -1,4 +1,30 @@
-# 1.0.3 (2026-07-13)
+# 1.0.5 (2026-10-12)
+
+### Features
+
+* **gateway:** startup now fails fast with a clear reason when the connection can't be established, instead of waiting forever
+* **gateway:** new `disconnected` event reports why the connection dropped and whether the SDK will recover on its own
+* **gateway:** reconnects are now configurable — cap the attempts and tune the backoff; unrecoverable cases (banned bot, sandbox-only account) are reported once and explicitly
+* **sdk:** `bot.getCredentials()` exposes the configured credentials for calling the lower-level APIs directly
+
+### Bug Fixes
+
+* **gateway:** retries are no longer reset by a connection that is accepted then immediately rejected, so a misconfigured bot can't spin in a tight reconnect loop
+* **gateway:** fixed several issues that could stall or misjudge the connection: an exception in your own handler, a silently dropped handshake, and a platform-requested reconnect treated as permanent
+* **token:** restarting the bot no longer cancels the token refresh belonging to the new session
+
+### Behavior changes
+
+* The SDK now keeps retrying until the failure is clearly unrecoverable (previously it gave up after 100 attempts). Set `reconnect.maxAttempts` for a hard cap.
+
+## 1.0.4 (2026-07-14)
+
+### Bug Fixes
+
+* **token:** fetching an access token now times out, and failures report the HTTP status and server response instead of a generic error
+* **token:** fixed edge cases that could leave token refresh stuck or log a crash that never happened
+
+## 1.0.3 (2026-07-13)
 
 
 ### Features
